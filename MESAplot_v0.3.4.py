@@ -1,12 +1,10 @@
 ## MESAPlot is a graphical and dynamical interface to analyse the MESA output 
 ## Developed by Maurizio Giannotti, Michael Wise, Wesam Azaizeh, Daria Vasilyeva, Sanja Zivanovic
 
-##Version 0.3.4
 
-print 'Opening file manager...'
-print ' .... '
-print ' if your computer is slow, Have a cup of coffee'
-print ' '
+
+print 'You are using MESAplot version 0.3.4. If it\'s your first time, initialization may take a moment.'
+print 'Attempting library imports:'
 
 import wx , numpy as np, matplotlib
 matplotlib.use('WXAgg')
@@ -15,6 +13,7 @@ from matplotlib.figure import Figure
 import pylab as pl, matplotlib.pyplot as plt, datetime, re, os, loadHistAndProf, default_settings as ds
 from wx.lib.wordwrap import wordwrap
 
+print 'Managing Files (File_Manager.py)'
 ##Allows user to use default path and skip file open dialogue. Also checks if the requested default path exists.
 if ds.use_default_path:
     path_to_data=ds.default_path
@@ -22,8 +21,7 @@ if ds.use_default_path:
         os.chdir(os.path.dirname(os.path.realpath(__file__)))
         pass    
     else:
-        print 'Warning ! use_default_path is True but the attempted path:\n   ' + path_to_data + '\ndoes not exist. \
-Let\'s make believe use_default_path is false :) opening fileManager'
+        print 'Warning ! use_default_path is True but the attempted path:\n   ' + path_to_data + '\ndoes not exist. \Let\'s make believe use_default_path is false :) opening fileManager'
         import File_Manager as FM
         path_to_data=FM.path_folder
 else:
