@@ -1,0 +1,68 @@
+Hello and thanks for downloading ! MESAplot is the replacement for MESAFace, the Mathematica-based plotting software we previously wrote. We currently consider it to be a beta version, although it is already quite useful. 
+
+It would be helpful to get feedback on the installation process for various systems so we can properly deal with any troubles in the installation instructions. Please let us know: mwise@barry.edu or mgiannotti@barry.edu
+
+
+
+MESAplot uses python 2.7 with the following (user-installed) libraries: wxPython, matplotlib, and numpy.
+
+------======Windows======------
+1) Install any python 2.7.x
+	https://www.python.org/download/releases/2.7.7/
+
+2) Install wxPython
+	Visit http://www.wxpython.org/download.php#msw and get the appropriate installer.
+	and follow instructions for the appropriate installer (typically wxPython3.0-win32-py27)
+
+3) Install Numpy
+	http://sourceforge.net/projects/numpy/files/NumPy/1.7.2/
+	and get numpy-1.8.1-win32-superpack-python2.7.exe
+
+4) Install Matplotlib
+	http://matplotlib.org/downloads.html
+	and get the appropriate installer (typically matplotlib-1.3.1.win32-py2.7.exe) 
+	
+------======Mac======------
+1) Install any python 2.7.x
+	https://www.python.org/download/releases/2.7.7/
+
+2) Install wxPython
+	http://www.wxpython.org/download.php#osx
+	and follow instructions for appropriate installer (you may have to change an OSX security & privacy setting
+	to "Allow applications downloaded from: anywhere")
+
+3) Install Numpy
+	http://sourceforge.net/projects/numpy/files/NumPy/1.7.2/
+	and get numpy-1.7.2-py2.7-python.org-macosx10.6.dmg (other installers may cause installation difficulties)
+
+4) Install Matplotlib -- 
+	http://matplotlib.org/downloads.html
+	and get matplotlib-1.3.1-py2.7-python.org-macosx10.6.dmg
+
+------======Linux======------
+1) Install any python 2.7.x . Many flavors now come with python. Don't forget to check your version (2.6 or 2.7).
+	https://www.python.org/download/releases/2.7.7/
+
+2) Install wxPython via a package repository. See the following links.
+	http://www.wxpython.org/download.php#linux
+	or http://wiki.wxpython.org/InstallingOnUbuntuOrDebian
+
+3) Install Numpy
+	http://sourceforge.net/projects/numpy/files/NumPy/1.7.2/
+	get the .tar.gz, build and install
+4) Install Matplotlib
+	http://matplotlib.org/downloads.html
+	get the .tar.gz, build and install
+	
+
+------======Trouble?======------
+
+--Please let us know ! mwise@barry.edu or mgiannotti@barry.edu
+
+--Various versions of these libraries should work (of course, the package's python requirement is respected e.g. 2.6 or 2.7). We have not tested all versions.
+
+--If python, Numpy, or Matplotlib give you trouble during installation, you may wish to install Anaconda, a scientific suite of python software (or some other suite). You will still need to install wxPython after this. Make sure you respect whether you use the 32-bit or 64-bit version of Anaconda when getting wxPython. 
+
+--We are working on instructions for pip and other package managers. 
+
+
