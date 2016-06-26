@@ -1,10 +1,13 @@
 """  Set default values which are read before launching MESAplot.  """
+#Leave all debug values as False
+debug = True
+debug_init = True
 
 ## use_defalut_path: if False the interface opens a file menu to allow to
 ##choose the directory where with the data.
 ##Otherwise, the interface uses the data in the default_path
 use_default_path = False
-default_path='C:\Users\Michael\Dropbox\MESA_python_interface\DATA\M8.0_g0.0_z0.02'
+default_path='C:\Users\Michael\Dropbox\MESA_python_interface\data\Sun'
 
 # Widows position and size
 window_position_x=50
@@ -32,3 +35,10 @@ default_profile_reactions=['pp','cno','tri_alfa','burn_c']
 
 ## What format to export plot images as. Valid file types: pgf,svgz,tiff,jpg,raw,jpeg,png,ps,emf,svg,eps,rgba,pdf,tif
 plotExportFileType = 'png'
+
+if debug:
+	print "debug is true"
+	use_default_path = True
+	default_path='C:\Users\Michael\Dropbox\MESA_python_interface\data\Sun'
+	load_all_profiles = False
+	num_profiles_to_load = 4

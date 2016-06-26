@@ -1,9 +1,7 @@
 import numpy as np
 import linecache
-#import matplotlib.pyplot as plt
 import os
 import default_settings as ds
-import File_Manager as FM
 '''
 This module provides tables with data from the MESA run output.
 The output is found in the folder specified by --> aPath
@@ -16,12 +14,6 @@ star --> is a table with all the data in the history file, excluding the first 6
 history_labels --> is a list with the names of the columns in history.data
 '''
 aPath = ""
-
-def initPath(datPath):
-    print 'running initPath'
-    global aPath
-    aPath=datPath
-
 class initData():
     def __init__(self,aPath):
 ##    ''' Purging routines '''
@@ -31,17 +23,20 @@ class initData():
             i=len(self.model_numbers)-1 
             while(self.model_numbers[i]>self.model_numbers[i-1] and i>0): 
                 i=i-1
-            print i
+            # print i
+            # Reference line numbers as log output
+            print "Model#" , self.model_numbers[i], "is greater than or equal to model#", self.model_numbers[i-1]
             if i==0:
                 return 0
             Drop2=i-1
-            print "Drop2 " + str(Drop2)
+            # print "Drop2 " + str(Drop2)
             FindDrop1=self.model_numbers[i]
             i=i-1
             while self.model_numbers[i]!=FindDrop1:
                 i=i-1
             Drop1=i-1
-            print "Drop1 " + str(Drop1)
+            # print "Drop1 " + str(Drop1)
+            print "Model Cleaning: Dropping model number #" +  str(Drop2)
             piece1=self.original_history[0:Drop1]
             piece2=self.original_history[Drop2+1:-1]
             self.original_history=np.concatenate([piece1,piece2])
@@ -59,22 +54,24 @@ class initData():
         """Collects the output from a MESA run"""
         print aPath
 ## Checks if load_all_profiles is true or false in default_settings.py, then handles situation appropriately
+        self.num_profiles=len(np.loadtxt(aPath+os.path.sep+'profiles.index',skiprows=1))
         if ds.load_all_profiles:
-            self.num_profiles=len(np.loadtxt(aPath+os.path.sep+'profiles.index',skiprows=1))
+            print "Loading all profiles(" + str(self.num_profiles) + ") (load_all_profiles=False in default_settings.py.)"
         else:
-            if ds.num_profiles_to_load <= len(np.loadtxt(aPath+os.path.sep+'profiles.index',skiprows=1)):
+            if ds.num_profiles_to_load <= self.num_profiles:
                 self.num_profiles=ds.num_profiles_to_load
+                print "Loading "+ str(self.num_profiles) + " profiles (load_all_profiles=True in default_settings.py.)"
             else:
-                print "num_profiles_to_load greater than actual number of profiles... loading all profiles"
-                self.num_profiles=len(np.loadtxt(aPath+os.path.sep+'profiles.index',skiprows=1))
+                print "num_profiles_to_load greater than actual number of profiles, loading all profiles("+ str(self.num_profiles) + ")."
 
-        print 'there are '+ str(self.num_profiles)+' profiles'
 #        profile=np.loadtxt(aPath+os.path.sep+'profiles.index',skiprows=1)
 
-        if os.path.isfile(FM.path_folder + os.path.sep + 'star.log'):
+        # if os.path.isfile(FM.path_folder + os.path.sep + 'star.log'):
+        if os.path.isfile(aPath + os.path.sep + 'star.log'):
             self.history_path=aPath+os.path.sep+'star.log'
             profileversion = 'log'
-        elif os.path.isfile(FM.path_folder + os.path.sep + 'history.data'):
+        # elif os.path.isfile(FM.path_folder + os.path.sep + 'history.data'):
+        elif os.path.isfile(aPath + os.path.sep + 'history.data'):
             self.history_path=aPath+os.path.sep+'history.data'
             profileversion = 'profile'
         else:
@@ -92,8 +89,7 @@ class initData():
         original_history_length=len(self.original_history)
         self.model_numbers=self.original_history[:,self.history_labels.index("model_number")]  
  
-        print "here"
-        print type(self.model_numbers)
+        # print type(self.model_numbers)
 
         #Builds an array called profile with
         #the hystory file as its zero entry and profile_n as its nth entry.
@@ -102,7 +98,6 @@ class initData():
             pass
         final_history_length=len(self.original_history)
         N_deleted_lines = original_history_length-final_history_length
-
 
         self.profile = [self.original_history]
         self.profile_GlobalInfo_values = [get_GlobalInfo_values(self.history_path)]
@@ -114,14 +109,11 @@ class initData():
         ## profile_age_index_in_History is a list of positions in the history file of the profile ages.
         ##the nth element of the list corresponds to the position in history where the age of the profile n appears.
 
-
-
-
         self.profile_age_in_History = [0]
         self.profile_age_index_in_History = [0]
 
         profile_size=[self.history_size]
-        print 'downloaded hystory file'
+        print 'Imported history file'
 
         ##Loads the content of the profiles
         for i in range(1,self.num_profiles+1):
@@ -137,7 +129,7 @@ class initData():
             for j in range (len(self.profile_GlobalInfo_names)):
                 self.new_profile_information = self.new_profile_information + str(self.profile_GlobalInfo_names[j])+":  "+str(self.profile_GlobalInfo_values[i][j])+"\n"
             self.profile_information.append(self.new_profile_information)
-            print 'downloaded profile '+str(i)+' / '+str(self.num_profiles)
+            print 'Imported profile #'+str(i)+' / '+str(self.num_profiles)
 
         ##the function sorted_profile_number takes n and returns the number of the nth profie in order of age.
         ##Example, sorted_profile_number(1) returns the profile number of the youngest profile.
@@ -150,7 +142,7 @@ class initData():
         ##History_star_data = profile[0][:,history_labels.index('star_age')].tolist()
 
         ##History_star_data = np.loadtxt(history_path,skiprows=6, usecols=(history_labels.index('star_age'),)).tolist()
-        print type(History_star_data)
+        # print type(History_star_data)
         ##print History_star_data.tolist()
         ##History_star_data = np.loadtxt(history_path,skiprows=6, usecols=(1,))
 
@@ -162,9 +154,9 @@ class initData():
         ##Clean the cash
         linecache.clearcache()
 
-        print 'Downloaded '+ str(self.num_profiles)+ ' profiles + 1 hystory file'
-        print 'original hystory file has '+ str(self.history_size)+ ' lines (excluding the header)'
-        print 'deleted '+ str(N_deleted_lines)+ ' lines from the original hystory file'
+        # print 'Downloaded '+ str(self.num_profiles)+ ' profiles + 1 hystory file'
+        print 'Original history file has '+ str(self.history_size)+ ' lines (excluding the header)'
+        print 'deleted '+ str(N_deleted_lines)+ ' lines from the original history file'
 
 ##        print "HERE"
 ##        print "now "+str(findAnomly(self.profile[0][:,self.history_labels.index("model_number")]))

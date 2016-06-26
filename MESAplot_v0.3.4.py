@@ -10,15 +10,19 @@ import wx , numpy as np, matplotlib
 matplotlib.use('WXAgg')
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg 
 from matplotlib.figure import Figure
-import pylab as pl, matplotlib.pyplot as plt, datetime, re, os, loadHistAndProf, default_settings as ds
+import pylab as pl, matplotlib.pyplot as plt, datetime, re, os, MESAoutput1, default_settings as ds
 from wx.lib.wordwrap import wordwrap
 
 print 'Managing Files (File_Manager.py)'
 ##Allows user to use default path and skip file open dialogue. Also checks if the requested default path exists.
 if ds.use_default_path:
     path_to_data=ds.default_path
-    if os.path.isdir(path_to_data.rpartition(os.path.sep)[0]):
-        os.chdir(os.path.dirname(os.path.realpath(__file__)))
+    # if os.path.isdir(path_to_data.rpartition(os.path.sep)[0]):
+    if os.path.isdir(path_to_data):
+        # os.chdir(os.path.dirname(os.path.realpath(__file__)))
+        # print "------------" + str(path_to_data.rpartition(os.path.sep)[0])
+        # print "Setting Dir: " + str(os.path.dirname(os.path.realpath(__file__)))
+        # os.chdir(os.path.normpath(path_to_data))
         pass    
     else:
         print 'Warning ! use_default_path is True but the attempted path:\n   ' + path_to_data + '\ndoes not exist. \Let\'s make believe use_default_path is false :) opening fileManager'
@@ -29,7 +33,8 @@ else:
     path_to_data=FM.path_folder
 
 ##Uses supplied path to instance data
-odat = loadHistAndProf.initData(path_to_data)
+# odat = loadHistAndProf.initData(path_to_data)
+odat = MESAoutput1.initData(path_to_data)
 
 class container(wx.Frame):
     def __init__(self,title,pos,size):
@@ -862,6 +867,8 @@ class MainFrame(wx.ScrolledWindow):
         self.P_plot.set_ylabel(self.operation_label(self.Poperation_y,Py_label), fontsize = self.lbl_ftsize, color=self.lbl_color)
 app = wx.App(False)
 frame = container("MESAplot",(ds.window_position_x,ds.window_position_y),(ds.window_size_x,ds.window_size_y))
+if ds.debug_init:
+    app.Exit()
 frame.Show()
 app.MainLoop()
 

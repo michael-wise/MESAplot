@@ -9,8 +9,11 @@ class Frame(wx.Frame):
         self.timer.Start(1, True)
     def OnTimer(self,evt):
         self.Close()
-os.chdir(os.path.dirname(os.path.realpath(__file__)))
 progPath= os.path.dirname(os.path.realpath(__file__))
+print "In File_Manager: Set working dir to: " + str(progPath)
+# os.chdir(os.path.dirname(os.path.realpath(__file__)))
+os.chdir(progPath)
+
 if os.path.isfile(progPath + os.path.sep + 'config.txt'):
     f=open(progPath + os.path.sep + 'config.txt','r+')
     lines=f.read().splitlines()
